@@ -15,5 +15,12 @@
   "description": "",
   "devDependencies": {
     "jasmine": "^3.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/builtbygio/scrollbar-style.git"
+  },
+  "engines": {
+    "chevron": "*"
   }
 }
