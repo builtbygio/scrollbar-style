@@ -49,7 +49,12 @@ void ScrollbarStyleObserver::HandleScrollbarStyleChanged() {
 }
 
 ScrollbarStyleObserver::~ScrollbarStyleObserver() {
-  delete &callback;
+  // `callback` is a Napi::FunctionReference value member, not a heap
+  // allocation, so it must not be deleted: ~Reference() runs on its own and
+  // calls napi_delete_reference. Doing it by hand here ran that teardown
+  // against an environment already being destroyed and then called
+  // operator delete on memory that was never new'd, which crashed the
+  // renderer on every window reload (chevron#310).
 }
 
 Napi::Function ScrollbarStyleObserver::GetClass(Napi::Env env) {
